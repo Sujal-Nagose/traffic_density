@@ -1,0 +1,43 @@
+  #define G_PIN 9
+  #define Y_PIN 6
+  #define R_PIN 3
+
+  void setup() {
+    Serial.begin(9600);
+    pinMode(G_PIN, OUTPUT);
+    pinMode(Y_PIN, OUTPUT);
+    pinMode(R_PIN, OUTPUT);
+    allOff();
+    digitalWrite(R_PIN, HIGH);
+  }
+
+  void loop() {
+    if (Serial.available() > 0) {
+      char c = Serial.read();
+      allOff();
+      if      (c == 'G') digitalWrite(G_PIN, HIGH);
+      else if (c == 'Y') digitalWrite(Y_PIN, HIGH);
+      else if (c == 'R') digitalWrite(R_PIN, HIGH);
+      else if (c == 'E') emergencyFlash();
+    }
+  }
+
+  void allOff() {
+    digitalWrite(G_PIN, LOW);
+    digitalWrite(Y_PIN, LOW);
+    digitalWrite(R_PIN, LOW);
+  }
+
+  void emergencyFlash() {
+    for (int i = 0; i < 8; i++) {
+      digitalWrite(G_PIN, HIGH); delay(120);
+      digitalWrite(G_PIN, LOW);  delay(120);
+    }
+    digitalWrite(G_PIN, HIGH);
+  }
+"""
+WIRING:
+  Arduino Pin 9 → 220Ω → Green  LED (+) → GND
+  Arduino Pin 6 → 220Ω → Yellow LED (+) → GND
+  Arduino Pin 3 → 220Ω → Red    LED (+) → GND
+"""
